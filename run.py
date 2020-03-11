@@ -5,6 +5,7 @@ import datetime
 import lightgbm as lgb
 import sys
 import pandas as pd 
+from pathlib import Path
 
 class LightGBM:
     def __init__(self,params,save_name):
@@ -28,8 +29,10 @@ class LightGBM:
 
         return True
 
-    def fit(self,callbacks=None):
+    def fit(self):
         watchlist = [self.train, self.valid]
+        callbacks = [logger.log_evaluation(logger, period=10)]
+
         self.model = lgb.train(self.params['model_params'], self.train,valid_sets=watchlist, callbacks=callbacks)
         return model
     
@@ -66,8 +69,6 @@ if __name__ == '__main__':
     fh = logging.FileHandler('./logs/logfile/'+save_name+'.log')
     logger.addHandler(fh)
 
-    callbacks = [logger.log_evaluation(logger, period=10)]
-
     logger.info("[Features]")
     for feature in params['features']:
         logger.info(feature)
@@ -77,12 +78,18 @@ if __name__ == '__main__':
         logger.info("{}: {}".format(k,v))
 
     # make data
-
+    FEATURE_DIR = Path("./features/")
+    df = pd.concat([ pd.read_pickle(FEATURE_DIR+f'{f}.pickle') for f in params['features']],axis=1)
+    train = df[''] 
+    valid = df['']
+    test = df['']
 
     # train model
     lgbm = LightGBM(params,save_name)
     lgbm.set_data(train,valid,test)
     lgbm.fit()
+
+    # evaluate and save information
     lgbm.save_importance()
     lgbm.save_predict()
 
