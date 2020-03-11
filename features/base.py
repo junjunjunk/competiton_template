@@ -6,6 +6,13 @@ from pathlib import Path
 import pickle
 import csv
 
+@contextmanager
+def timer(name):
+    t0 = time.time()
+    print(f'[{name}] start')
+    yield
+    print(f'[{name}] done in {time.time() - t0:.0f} s')
+
 
 class Feature(metaclass=ABCMeta):
     """
@@ -23,10 +30,11 @@ class Feature(metaclass=ABCMeta):
     
     # @stop_watch(self.name)
     def run(self):
-        self.create_features()
-        prefix = self.prefix + '_' if self.prefix else ''
-        suffix = '_' + self.suffix if self.suffix else ''
-        self.df.columns = prefix + self.df.columns + suffix
+        with timer(self.name):
+            self.create_features()
+            prefix = self.prefix + '_' if self.prefix else ''
+            suffix = '_' + self.suffix if self.suffix else ''
+            self.df.columns = prefix + self.df.columns + suffix
         return self
     
     @abstractmethod
