@@ -29,7 +29,7 @@ class Feature(metaclass=ABCMeta):
     dir = '.'
     
     def __init__(self):
-        self.name = self.__class__.__name__
+        self.name = re.sub('(?!^)([A-Z]+)', r'_\1',self.__class__.__name__).lower()
         self.df = pd.DataFrame()
         self.path = Path(self.dir) / f'{self.name}.pkl'
     
