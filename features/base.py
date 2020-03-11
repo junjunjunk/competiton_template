@@ -101,5 +101,5 @@ def generate_features(namespace, overwrite):
         if f.path.exists() and not overwrite:
             print(f.name, 'was skipped')
         else:
-            f.run().save().create_details()
+            f.run().save()
 
