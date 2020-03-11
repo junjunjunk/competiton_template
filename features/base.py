@@ -4,8 +4,7 @@ import inspect
 import pandas as pd
 from pathlib import Path
 import pickle
-import re
-import time
+import csv
 
 
 class Feature(metaclass=ABCMeta):
@@ -40,9 +39,8 @@ class Feature(metaclass=ABCMeta):
     def load(self):
         self.df = pd.read_pickle(str(self.path))
 
-    def create_details(self,file_name,description):
+    def create_details(self,file_name,col_name,description):
         file_path = dir + file_name
-        col_name = self.__class__.__name__
 
         if not os.path.isfile(file_path):
             with open(file_path,"w"):pass
@@ -90,5 +88,5 @@ def generate_features(namespace, overwrite):
         if f.train_path.exists() and f.test_path.exists() and not overwrite:
             print(f.name, 'was skipped')
         else:
-            f.run().save()
+            f.run().save().create_details()
 
