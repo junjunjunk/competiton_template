@@ -53,7 +53,7 @@ class Feature(metaclass=ABCMeta):
         self.df = pd.read_pickle(str(self.path))
 
     def create_details(self,file_name,col_name,description):
-        file_path = Path(dir) / f'{file_name}.csv'
+        file_path = Path(self.dir) / f'{file_name}.csv'
 
         if not os.path.isfile(file_path):
             with open(file_path,"w"):pass
