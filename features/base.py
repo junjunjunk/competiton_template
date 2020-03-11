@@ -95,7 +95,7 @@ def generate_features(namespace, overwrite):
     [3] overwriteモード -> 計算
     """
     for f in get_features(namespace):
-        if f.df.path.exists() and not overwrite:
+        if f.path.path.exists() and not overwrite:
             print(f.name, 'was skipped')
         else:
             f.run().save().create_details()
