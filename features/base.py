@@ -6,6 +6,9 @@ from pathlib import Path
 import pickle
 from contextlib import contextmanager
 
+import re
+import time
+
 import csv
 
 @contextmanager
