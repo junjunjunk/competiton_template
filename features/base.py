@@ -66,7 +66,7 @@ class Feature(metaclass=ABCMeta):
             if len(col)!=0:
                 return
 
-            writer = csv.writer()
+            writer = csv.writer(f)
             writer.writerow([col_name,description])
 """
 command line tool
